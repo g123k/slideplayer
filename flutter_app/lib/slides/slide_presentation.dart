@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:flutter_slides/models/slides.dart';
-import 'package:flutter_slides/slides/slide_page.dart';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_slides/models/slides.dart';
+import 'package:flutter_slides/slides/slide_page.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:file_chooser/file_chooser.dart' as file_chooser;
 
 class SlidePresentation extends StatefulWidget {
   @override
@@ -40,14 +41,6 @@ class _SlidePresentationState extends State<SlidePresentation>
       vsync: this,
       duration: Duration(milliseconds: 250),
     );
-
-    MethodChannel('FlutterSlides:CustomPlugin', const JSONMethodCodec())
-        .invokeMethod('get')
-        .then((result) {
-      if (result != null) {
-        FlutterSlidesModel().loadSlidesData(result);
-      }
-    });
   }
 
   @override
@@ -258,11 +251,7 @@ class _SlidePresentationState extends State<SlidePresentation>
                 height: 60.0,
                 color: buttonColor,
                 onPressed: () {
-                  file_chooser.showOpenPanel((result, paths) {
-                    if (paths != null) {
-                      FlutterSlidesModel().loadSlidesData(paths.first);
-                    }
-                  }, allowsMultipleSelection: false);
+                  openFilePicker();
                 },
                 child: Text(
                   'Open',
@@ -274,6 +263,13 @@ class _SlidePresentationState extends State<SlidePresentation>
         ),
       ),
     );
+  }
+
+  void openFilePicker() async {
+    String filePath = await FilePicker.getFilePath(type: FileType.ANY);
+    if (filePath != null) {
+      FlutterSlidesModel().loadSlidesData(filePath);
+    }
   }
 
   onKeyEvent(RawKeyEvent event, FlutterSlidesModel model) {

@@ -2,13 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_slides/models/slide.dart';
 import 'package:flutter_slides/models/slide_factors.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_slides/utils/color_utils.dart' as ColorUtils;
 import 'package:scoped_model/scoped_model.dart';
 import 'package:watcher/watcher.dart';
-import 'package:flutter_slides/utils/color_utils.dart' as ColorUtils;
 
 FlutterSlidesModel loadedSlides = FlutterSlidesModel();
 
@@ -48,7 +47,8 @@ class FlutterSlidesModel extends Model {
           fileString = fileString.replaceAll(
               "\"@replace/${entry.key}\"", entry.value.toString());
         }
-        _replaceFileSubscription = Watcher(replaceFilePath).events.listen((event) {
+        _replaceFileSubscription =
+            Watcher(replaceFilePath).events.listen((event) {
           loadSlidesData(filePath);
           notifyListeners();
         });
@@ -101,8 +101,6 @@ class FlutterSlidesModel extends Model {
       }
       loadedSlides.slides = slideList;
       loadedSlides.notifyListeners();
-      MethodChannel('FlutterSlides:CustomPlugin', const JSONMethodCodec())
-          .invokeMethod('set', filePath);
     } catch (e) {
       print("Error loading slides file: $e");
     }

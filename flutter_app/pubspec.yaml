@@ -12,15 +12,7 @@ dependencies:
   spritewidget: ^0.9.17
   flare_flutter: ^1.0.11
   nima: ^1.0.2
-
-
-  # Desktop embedder plugins.
-  color_panel:
-    path: ../../flutter-desktop-embedding/plugins/color_panel
-  file_chooser:
-    path: ../../flutter-desktop-embedding/plugins/file_chooser
-  menubar:
-    path: ../../flutter-desktop-embedding/plugins/menubar
+  file_picker: ^1.3.2
 
 dev_dependencies:
   flutter_test:
@@ -31,7 +23,6 @@ flutter:
 
   assets:
   - assets/fonts/GoogleSans/
-  - assets/spritewidget/
   - assets/flare/
 
   fonts:
